@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Balikis Yussuf — Data Analyst</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:    #E8637A;
+      --coral:   #F4956A;
+      --gold:    #F5C842;
+      --teal:    #3ABFB1;
+      --blush:   #FDE8EC;
+      --cream:   #FDF7F0;
+      --ink:     #1E1B2E;
+      --muted:   #6B6578;
+      --card-bg: #FFFFFF;
+      --border:  #F0DDE3;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%;
+      background: rgba(253,247,240,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 700; letter-spacing: 0.03em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-logo span { color: var(--rose); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rose); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 5% 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative blobs */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      right: -100px; top: -100px;
+      background: radial-gradient(circle at 60% 40%, #F4956A33 0%, #E8637A22 40%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .blob-2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      left: -80px; bottom: 0;
+      background: radial-gradient(circle, #3ABFB122 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--coral);
+      margin-bottom: 1.2rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 28px; height: 2px; background: var(--coral); border-radius: 2px;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 6vw, 5.5rem);
+      font-weight: 700; line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .hero-name em {
+      font-style: italic; color: var(--rose);
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem; font-weight: 300; color: var(--muted);
+      line-height: 1.7; max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 1.8rem; border-radius: 50px;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em;
+      text-decoration: none; transition: all 0.25s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--rose); color: #fff;
+      box-shadow: 0 6px 24px #E8637A44;
+    }
+    .btn-primary:hover { background: #d44d63; transform: translateY(-2px); box-shadow: 0 10px 30px #E8637A55; }
+
+    .btn-ghost {
+      background: transparent; color: var(--ink);
+      border: 2px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+
+    /* Hero visual side */
+    .hero-visual {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; align-items: center;
+    }
+
+    .avatar-ring {
+      width: 340px; height: 340px; border-radius: 50%;
+      border: 3px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      animation: rotate-ring 20s linear infinite;
+    }
+    @keyframes rotate-ring {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .avatar-ring::before {
+      content: '';
+      position: absolute; inset: 12px; border-radius: 50%;
+      border: 2px dashed #E8637A55;
+    }
+
+    .avatar-dot {
+      position: absolute; width: 14px; height: 14px;
+      background: var(--rose); border-radius: 50%;
+      top: -7px; left: 50%; transform: translateX(-50%);
+      box-shadow: 0 0 0 4px #FDE8EC;
+    }
+
+    .avatar-inner {
+      width: 260px; height: 260px; border-radius: 50%;
+      background: linear-gradient(135deg, #FDE8EC 0%, #FDF7F0 50%, #E8F8F6 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      animation: rotate-ring 20s linear infinite reverse;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .avatar-initials {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem; font-weight: 700; color: var(--rose);
+      line-height: 1;
+    }
+
+    .avatar-sub {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* Floating stat cards */
+    .stat-card {
+      position: absolute;
+      background: white;
+      border-radius: 14px;
+      padding: 0.8rem 1.1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+    }
+
+    .stat-card .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 700; color: var(--rose);
+      line-height: 1;
+    }
+    .stat-card .label { color: var(--muted); margin-top: 2px; }
+
+    .stat-card-1 { top: 30px; right: -10px; animation: float1 4s ease-in-out infinite; }
+    .stat-card-2 { bottom: 60px; left: -20px; animation: float2 5s ease-in-out infinite; }
+    .stat-card-3 { bottom: 10px; right: 20px; animation: float1 6s ease-in-out infinite; }
+
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* ── SKILLS STRIP ── */
+    .skills-strip {
+      background: var(--ink);
+      padding: 3.5rem 5%;
+      position: relative;
+      overflow: hidden;
+    }
+    .skills-strip::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--rose), var(--coral), var(--gold), var(--teal), var(--rose));
+    }
+
+    .skills-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--coral);
+      margin-bottom: 1.8rem; text-align: center;
+    }
+
+    .skills-grid {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem;
+    }
+
+    .skill-pill {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.7rem 1.4rem; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: #fff; font-size: 0.82rem; font-weight: 500;
+      transition: all 0.25s;
+    }
+    .skill-pill:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+    .skill-pill .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 5%; }
+
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--rose);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+      color: var(--ink);
+    }
+    .section-title em { font-style: italic; color: var(--rose); }
+
+    /* ── ABOUT ── */
+    .about {
+      background: white;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-card-big {
+      background: linear-gradient(135deg, var(--blush), #fff);
+      border-radius: 24px; padding: 3rem;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem; line-height: 0.5;
+      color: var(--rose); opacity: 0.2;
+      position: absolute; top: 1.5rem; left: 1.5rem;
+    }
+
+    .about-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-style: italic; font-weight: 600;
+      color: var(--ink); line-height: 1.6;
+      position: relative; z-index: 1; padding-top: 1rem;
+    }
+
+    .about-accent {
+      position: absolute; bottom: -20px; right: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--coral));
+      opacity: 0.35;
+    }
+
+    .about-text p {
+      font-size: 1rem; line-height: 1.8; color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .about-text p strong { color: var(--ink); font-weight: 600; }
+
+    .about-highlights {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-top: 2rem;
+    }
+
+    .highlight-item {
+      background: var(--cream);
+      border-radius: 12px; padding: 1rem 1.2rem;
+      border-left: 3px solid var(--rose);
+    }
+    .highlight-item .h-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 700; color: var(--rose);
+    }
+    .highlight-item .h-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── PROJECTS ── */
+    .projects { background: var(--cream); }
+
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: white; border-radius: 20px;
+      overflow: hidden; border: 1px solid var(--border);
+      transition: all 0.3s; position: relative;
+    }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+
+    .project-card:first-child {
+      grid-column: span 2;
+    }
+
+    .project-banner {
+      height: 180px;
+      position: relative; overflow: hidden;
+    }
+    .project-card:first-child .project-banner { height: 220px; }
+
+    .banner-bg {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
+    }
+
+    .banner-bg-1 { background: linear-gradient(135deg, #FDE8EC, #F4956A33); }
+    .banner-bg-2 { background: linear-gradient(135deg, #E8F8F6, #3ABFB133); }
+    .banner-bg-3 { background: linear-gradient(135deg, #FEF9E7, #F5C84233); }
+
+    .project-tag {
+      position: absolute; top: 1rem; left: 1rem;
+      background: white; color: var(--rose);
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 50px;
+    }
+
+    .project-body { padding: 1.5rem; }
+    .project-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .project-body p {
+      font-size: 0.85rem; line-height: 1.65; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .project-tools {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem;
+    }
+    .tool-tag {
+      font-size: 0.7rem; font-weight: 600; padding: 0.25rem 0.65rem;
+      border-radius: 50px; background: var(--blush); color: var(--rose);
+    }
+    .tool-tag.teal { background: #E8F8F6; color: #2a9d8f; }
+    .tool-tag.gold { background: #FEF9E7; color: #c49a00; }
+
+    .project-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--rose);
+      text-decoration: none; transition: gap 0.2s;
+    }
+    .project-link:hover { gap: 0.7rem; }
+
+    /* ── CASE STUDIES / BLOG ── */
+    .blog { background: white; }
+
+    .blog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+    .blog-card {
+      border-radius: 20px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--cream);
+      display: flex; flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .blog-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+
+    .blog-card-img {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+    .blog-card-img-1 { background: linear-gradient(135deg, #F4956A22, #E8637A33); }
+    .blog-card-img-2 { background: linear-gradient(135deg, #3ABFB122, #F5C84233); }
+
+    .blog-card-body { padding: 1.4rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .blog-date { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .blog-card-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+    .blog-card-body p { font-size: 0.84rem; color: var(--muted); line-height: 1.65; flex: 1; }
+    .blog-read-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1rem; font-size: 0.8rem; font-weight: 600;
+      color: var(--teal); text-decoration: none;
+    }
+    .blog-read-link:hover { gap: 0.7rem; }
+
+    /* Coming Soon badge */
+    .coming-soon {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--coral);
+      background: #FDE8EC; padding: 0.3rem 0.7rem; border-radius: 50px;
+      margin-bottom: 0.7rem;
+    }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: var(--ink);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .contact::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, #E8637A18 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, #3ABFB118 0%, transparent 60%);
+    }
+
+    .contact-inner { position: relative; z-index: 1; }
+
+    .contact .section-eyebrow { color: var(--coral); }
+    .contact .section-title { color: white; }
+
+    .contact-subtitle {
+      font-size: 1rem; color: rgba(255,255,255,0.5); margin: 1rem auto 2.5rem;
+      max-width: 480px; line-height: 1.7;
+    }
+
+    .contact-links {
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 1.8rem; border-radius: 50px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white; text-decoration: none; font-size: 0.84rem; font-weight: 500;
+      transition: all 0.25s;
+    }
+    .contact-link:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .contact-link.highlight {
+      background: var(--rose); border-color: var(--rose);
+      box-shadow: 0 6px 24px #E8637A44;
+    }
+    .contact-link.highlight:hover { background: #d44d63; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 1.8rem 5%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    footer span { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 700; color: white;
+    }
+    .footer-logo span { color: var(--rose); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .hero-tagline { margin-left: auto; margin-right: auto; }
+      .hero-cta { justify-content: center; }
+      .hero-visual { margin-top: 3rem; }
+      .about { grid-template-columns: 1fr; gap: 3rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card:first-child { grid-column: span 1; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .about-highlights { grid-template-columns: 1fr 1fr; }
+      .stat-card { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 4%; }
+      .nav-links { gap: 1.2rem; }
+      .nav-links li:nth-child(n+4) { display: none; }
+      section { padding: 4rem 4%; }
+      .about-highlights { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">B<span>.</span>Yussuf</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#blog">Case Studies</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Data Analyst &amp; Storyteller</div>
+      <h1 class="hero-name">
+        Balikis<br><em>Yussuf</em>
+      </h1>
+      <p class="hero-tagline">
+        Turning raw numbers into clear, beautiful stories — using Excel, SQL, and a deep love for structured thinking.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">
+          View My Work <span>→</span>
+        </a>
+        <a href="#contact" class="btn btn-ghost">Let's Connect</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="avatar-ring">
+        <div class="avatar-dot"></div>
+        <div class="avatar-inner">
+          <div class="avatar-initials">BY</div>
+          <div class="avatar-sub">Data Analyst</div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-1">
+        <div class="num">3+</div>
+        <div class="label">Projects</div>
+      </div>
+      <div class="stat-card stat-card-2">
+        <div class="num">SQL</div>
+        <div class="label">& Excel</div>
+      </div>
+      <div class="stat-card stat-card-3">
+        <div class="num">LASU</div>
+        <div class="label">Graduate</div>
+      </div>
+    </div>
+
+    <div class="blob-2"></div>
+  </section>
+
+  <!-- SKILLS STRIP -->
+  <div class="skills-strip">
+    <div class="skills-label">Tools &amp; Technologies</div>
+    <div class="skills-grid">
+      <div class="skill-pill"><span class="dot" style="background:var(--rose)"></span>Microsoft Excel</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--teal)"></span>SQL</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--gold)"></span>Data Cleaning</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--coral)"></span>Data Visualisation</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--rose)"></span>Pivot Tables</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--teal)"></span>Exploratory Analysis</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--gold)"></span>Reporting</div>
+      <div class="skill-pill"><span class="dot" style="background:var(--coral)"></span>Storytelling with Data</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-visual fade-up">
+      <div class="about-card-big">
+        <div class="quote-mark">"</div>
+        <p class="about-quote">
+          Good data analysis is not about the tools —<br/>it's about asking the right question first.
+        </p>
+      </div>
+      <div class="about-accent"></div>
+
+      <div class="about-highlights" style="margin-top: 1.8rem;">
+        <div class="highlight-item">
+          <div class="h-num">B.Sc</div>
+          <div class="h-label">Degree — LASU</div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-num">SQL</div>
+          <div class="h-label">Querying & Analysis</div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-num">Excel</div>
+          <div class="h-label">Advanced Spreadsheets</div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-num">3+</div>
+          <div class="h-label">Completed Projects</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text fade-up" style="transition-delay: 0.15s;">
+      <div class="section-eyebrow">About Me</div>
+      <h2 class="section-title" style="text-align:left; margin-bottom:1.5rem;">
+        Analyst. Thinker.<br/><em>Problem Solver.</em>
+      </h2>
+      <p>
+        Hi! I'm <strong>Balikis Yussuf</strong>, a data analyst with a background in — and a genuine obsession with — finding patterns in places others overlook. I graduated from <strong>Lagos State University (LASU)</strong>, and I've been building my skills in data analysis ever since.
+      </p>
+      <p>
+        I work primarily with <strong>Microsoft Excel</strong> and <strong>SQL</strong> to extract, clean, and interpret data. Whether it's spotting trends, building dashboards, or writing a well-structured query — I find the process deeply satisfying.
+      </p>
+      <p>
+        I'm currently growing my portfolio through real-world projects, and I believe every dataset tells a story worth sharing.
+      </p>
+      <div style="margin-top: 2rem;">
+        <a href="#projects" class="btn btn-primary">See My Projects →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <div class="section-header fade-up">
+      <div class="section-eyebrow">Portfolio</div>
+      <h2 class="section-title">Recent <em>Projects</em></h2>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1 — Featured -->
+      <div class="project-card fade-up">
+        <div class="project-banner">
+          <div class="banner-bg banner-bg-1">📊</div>
+          <span class="project-tag">Featured</span>
+        </div>
+        <div class="project-body">
+          <h3>Sales Performance Analysis — Retail Dataset</h3>
+          <p>Analysed 12 months of transaction data across multiple branches. Identified peak sales periods, top-performing product categories, and regional performance gaps using Excel pivot tables and charts.</p>
+          <div class="project-tools">
+            <span class="tool-tag">Excel</span>
+            <span class="tool-tag gold">Pivot Tables</span>
+            <span class="tool-tag teal">Data Viz</span>
+          </div>
+          <a href="https://github.com/balikisy23" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card fade-up" style="transition-delay:0.1s">
+        <div class="project-banner">
+          <div class="banner-bg banner-bg-2">🗄️</div>
+          <span class="project-tag">SQL</span>
+        </div>
+        <div class="project-body">
+          <h3>Customer Segmentation with SQL</h3>
+          <p>Wrote SQL queries to group customers by purchase frequency, average spend, and region — enabling targeted marketing recommendations.</p>
+          <div class="project-tools">
+            <span class="tool-tag teal">SQL</span>
+            <span class="tool-tag">Segmentation</span>
+          </div>
+          <a href="https://github.com/balikisy23" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card fade-up" style="transition-delay:0.2s">
+        <div class="project-banner">
+          <div class="banner-bg banner-bg-3">📈</div>
+          <span class="project-tag">Excel</span>
+        </div>
+        <div class="project-body">
+          <h3>HR Attrition Dashboard</h3>
+          <p>Built an interactive Excel dashboard tracking employee turnover by department, tenure, and gender — surfacing key retention insights.</p>
+          <div class="project-tools">
+            <span class="tool-tag">Excel</span>
+            <span class="tool-tag gold">Dashboard</span>
+            <span class="tool-tag teal">HR Analytics</span>
+          </div>
+          <a href="https://github.com/balikisy23" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CASE STUDIES / BLOG -->
+  <section class="blog" id="blog">
+    <div class="section-header fade-up">
+      <div class="section-eyebrow">Writing</div>
+      <h2 class="section-title">Case Studies &amp; <em>Insights</em></h2>
+    </div>
+
+    <div class="blog-grid">
+
+      <div class="blog-card fade-up">
+        <div class="blog-card-img blog-card-img-1">🔍</div>
+        <div class="blog-card-body">
+          <span class="coming-soon">✦ Coming Soon</span>
+          <h3>How I Cleaned a Messy 10,000-Row Dataset in Excel</h3>
+          <p>A walkthrough of the exact steps I used to handle duplicates, inconsistent formats, and blank fields — and what I learned about assumptions in raw data.</p>
+          <a href="#" class="blog-read-link">Read Case Study →</a>
+        </div>
+      </div>
+
+      <div class="blog-card fade-up" style="transition-delay:0.1s">
+        <div class="blog-card-img blog-card-img-2">💡</div>
+        <div class="blog-card-body">
+          <span class="coming-soon">✦ Coming Soon</span>
+          <h3>5 SQL Queries Every Junior Analyst Should Know</h3>
+          <p>From basic SELECT to GROUP BY with HAVING — the queries that show up in almost every analysis project, explained with simple real-world examples.</p>
+          <a href="#" class="blog-read-link">Read Article →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="section-eyebrow">Get In Touch</div>
+      <h2 class="section-title" style="color:white">Let's Work <em style="color:var(--coral)">Together</em></h2>
+      <p class="contact-subtitle">
+        Open to data analyst roles, freelance projects, and collaborations. Let's talk.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:balikisy23@gmail.com" class="contact-link highlight">
+          ✉️ &nbsp;balikisy23@gmail.com
+        </a>
+        <a href="https://github.com/balikisy23" target="_blank" class="contact-link">
+          🐙 &nbsp;GitHub
+        </a>
+        <a href="https://linkedin.com/in/balikis-yussuf" target="_blank" class="contact-link">
+          💼 &nbsp;LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">B<span>.</span>Yussuf</div>
+    <span>© 2025 Balikis Yussuf · Data Analyst</span>
+    <span>Lagos, Nigeria 🇳🇬</span>
+  </footer>
+
+  <!-- SCROLL ANIMATIONS -->
+  <script>
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
