@@ -536,6 +536,7 @@
     .blog-loader {
       display: block; text-align: center; padding: 1rem; color: var(--muted);
     }
+    .blog-loader.is-hidden { display: none; }
     .blog-dynamic { display: contents; }
 
     /* ── RESPONSIVE ── */
@@ -704,7 +705,7 @@
     <div class="blog-grid" id="blogGrid">
       <div id="blogLoader" class="blog-loader">Loading posts…</div>
       <div id="dynamicBlog" class="blog-dynamic"></div>
-      <div id="blogFallback" class="blog-loader" style="display:none">No case studies available yet.</div>
+      <div id="blogFallback" class="blog-loader is-hidden">No case studies available yet.</div>
     </div>
   </section>
 
